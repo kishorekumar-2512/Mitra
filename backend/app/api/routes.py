@@ -33,23 +33,52 @@ async def schema(request: Request) -> dict[str, Any]:
     return await request.app.state.database.get_schema()
 
 
+@router.get("/providers")
+async def providers() -> dict[str, Any]:
+    """Return configured AI providers and defaults."""
+    settings = get_settings()
+    configured_keys = {"anthropic": settings.anthropic_api_key, "groq": settings.groq_api_key, "gemini": settings.gemini_api_key}
+    configured_models = {"anthropic": settings.claude_model, "groq": settings.groq_model, "gemini": settings.gemini_model}
+    available = [p for p, k in configured_keys.items() if k]
+    default_p = "gemini" if "gemini" in available else ("groq" if "groq" in available else ("anthropic" if "anthropic" in available else "anthropic"))
+    return {
+        "default_provider": default_p,
+        "available": available,
+        "models": configured_models
+    }
+
+
 @router.post("/chat")
 async def chat(payload: ChatRequest, request: Request) -> StreamingResponse:
     settings = get_settings()
     configured_keys = {"anthropic": settings.anthropic_api_key, "groq": settings.groq_api_key, "gemini": settings.gemini_api_key}
     configured_models = {"anthropic": settings.claude_model, "groq": settings.groq_model, "gemini": settings.gemini_model}
-    api_key = payload.api_key or configured_keys[payload.provider]
+    
+    target_provider = payload.provider
+    api_key = payload.api_key or configured_keys.get(target_provider)
+    
+    # Auto-fallback to any provider that HAS an active key if the selected one is missing
+    if not api_key:
+        for p in ["gemini", "groq", "anthropic"]:
+            if configured_keys.get(p):
+                target_provider = p
+                api_key = configured_keys[p]
+                break
+                
     if not api_key:
         async def missing_key():
-            yield sse("error", {"message": f"Add a {payload.provider.title()} API key in Settings or configure it on the server."})
+            yield sse("error", {"message": "No API key found. Add a Gemini, Groq, or Anthropic API key in Settings or configure it in .env."})
         return StreamingResponse(missing_key(), media_type="text/event-stream")
+        
+    model_to_use = payload.model if (payload.provider == target_provider and payload.model) else configured_models[target_provider]
+    
     state = await request.app.state.memory.get(payload.session_id)
-    if state.get("provider") not in (None, payload.provider):
+    if state.get("provider") not in (None, target_provider):
         state["history"] = []
         await request.app.state.memory.save(payload.session_id, state)
-    state["provider"] = payload.provider
+    state["provider"] = target_provider
     await request.app.state.memory.save(payload.session_id, state)
-    agent = request.app.state.agent_factory(payload.provider, api_key, payload.model or configured_models[payload.provider])
+    agent = request.app.state.agent_factory(target_provider, api_key, model_to_use)
     async def event_stream():
         try:
             async for item in agent.run(payload.session_id, payload.message):

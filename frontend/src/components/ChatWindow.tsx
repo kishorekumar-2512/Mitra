@@ -9,9 +9,9 @@ const defaults: Record<Provider, string> = { anthropic: "claude-sonnet-4-5-20250
 interface SuggestionCategory { emoji: string; label: string; queries: string[]; }
 
 export function ChatWindow({ sessionId }: { sessionId: string }) {
-  const [provider, setProvider] = useState<Provider>("anthropic");
+  const [provider, setProvider] = useState<Provider>("gemini");
   const [apiKey, setApiKey] = useState("");
-  const [model, setModel] = useState(defaults.anthropic);
+  const [model, setModel] = useState(defaults.gemini);
   const config: ProviderConfig = { provider, apiKey, model };
   const { messages, busy, send } = useChatStream(sessionId, config);
   const [value, setValue] = useState(""); 
@@ -25,6 +25,17 @@ export function ChatWindow({ sessionId }: { sessionId: string }) {
   useEffect(() => { void end.current?.scrollIntoView({ behavior: "smooth" }); }, [messages]);
   
   useEffect(() => {
+    fetch("/api/providers").then(res => res.json()).then(data => {
+      if (data && data.default_provider) {
+        setProvider(data.default_provider as Provider);
+        if (data.models && data.models[data.default_provider]) {
+          setModel(data.models[data.default_provider]);
+        } else {
+          setModel(defaults[data.default_provider as Provider]);
+        }
+      }
+    }).catch(() => {});
+
     fetch("/api/suggestions").then(res => res.json()).then(data => {
       if (data && data.categories) {
         setCategories(data.categories);
