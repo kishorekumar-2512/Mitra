@@ -113,7 +113,7 @@ Run the full stack (FastAPI backend, React frontend, and Redis cache) using Dock
 
 ```bash
 # Clone the repository
-git clone https.github.com/kishorekumar-2512/Mitra.git
+git clone https://github.com/kishorekumar-2512/Mitra.git
 cd Mitra
 
 # Start all services
@@ -147,16 +147,18 @@ Redis is used for session memory and chart pinning. If Redis is unavailable, Mit
    cd backend
    ```
 
-2. **Create and activate a virtual environment**:
+2. **Activate existing environment or create a new one (`.venv`)**:
+   - **Linux / WSL / macOS (Bash/Zsh)**:
+     ```bash
+     source .venv/bin/activate
+     # Or if creating a new venv:
+     # python3 -m venv .venv && source .venv/bin/activate
+     ```
    - **Windows (PowerShell)**:
      ```powershell
-     python -m venv venv
-     .\venv\Scripts\activate
-     ```
-   - **macOS / Linux**:
-     ```bash
-     python3 -m venv venv
-     source venv/bin/activate
+     .\.venv\Scripts\activate
+     # Or if creating a new venv:
+     # python -m venv .venv && .\.venv\Scripts\activate
      ```
 
 3. **Install Python dependencies**:
