@@ -37,10 +37,18 @@ async def schema(request: Request) -> dict[str, Any]:
 async def providers() -> dict[str, Any]:
     """Return configured AI providers and defaults."""
     settings = get_settings()
-    configured_keys = {"anthropic": settings.anthropic_api_key, "groq": settings.groq_api_key, "gemini": settings.gemini_api_key}
-    configured_models = {"anthropic": settings.claude_model, "groq": settings.groq_model, "gemini": settings.gemini_model}
+    configured_keys = {
+        "anthropic": settings.anthropic_api_key.strip(),
+        "groq": settings.groq_api_key.strip(),
+        "gemini": settings.gemini_api_key.strip()
+    }
+    configured_models = {
+        "anthropic": settings.claude_model,
+        "groq": settings.groq_model,
+        "gemini": settings.gemini_model
+    }
     available = [p for p, k in configured_keys.items() if k]
-    default_p = "gemini" if "gemini" in available else ("groq" if "groq" in available else ("anthropic" if "anthropic" in available else "anthropic"))
+    default_p = "groq" if "groq" in available else ("gemini" if "gemini" in available else ("anthropic" if "anthropic" in available else "groq"))
     return {
         "default_provider": default_p,
         "available": available,
@@ -51,15 +59,24 @@ async def providers() -> dict[str, Any]:
 @router.post("/chat")
 async def chat(payload: ChatRequest, request: Request) -> StreamingResponse:
     settings = get_settings()
-    configured_keys = {"anthropic": settings.anthropic_api_key, "groq": settings.groq_api_key, "gemini": settings.gemini_api_key}
-    configured_models = {"anthropic": settings.claude_model, "groq": settings.groq_model, "gemini": settings.gemini_model}
+    configured_keys = {
+        "anthropic": settings.anthropic_api_key.strip(),
+        "groq": settings.groq_api_key.strip(),
+        "gemini": settings.gemini_api_key.strip()
+    }
+    configured_models = {
+        "anthropic": settings.claude_model,
+        "groq": settings.groq_model,
+        "gemini": settings.gemini_model
+    }
     
+    user_key = (payload.api_key or "").strip()
     target_provider = payload.provider
-    api_key = payload.api_key or configured_keys.get(target_provider)
+    api_key = user_key or configured_keys.get(target_provider, "")
     
     # Auto-fallback to any provider that HAS an active key if the selected one is missing
     if not api_key:
-        for p in ["gemini", "groq", "anthropic"]:
+        for p in ["groq", "gemini", "anthropic"]:
             if configured_keys.get(p):
                 target_provider = p
                 api_key = configured_keys[p]
@@ -70,7 +87,7 @@ async def chat(payload: ChatRequest, request: Request) -> StreamingResponse:
             yield sse("error", {"message": "No API key found. Add a Gemini, Groq, or Anthropic API key in Settings or configure it in .env."})
         return StreamingResponse(missing_key(), media_type="text/event-stream")
         
-    model_to_use = payload.model if (payload.provider == target_provider and payload.model) else configured_models[target_provider]
+    model_to_use = payload.model if (user_key and payload.model) else configured_models.get(target_provider, "")
     
     state = await request.app.state.memory.get(payload.session_id)
     if state.get("provider") not in (None, target_provider):
