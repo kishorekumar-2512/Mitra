@@ -1,0 +1,19 @@
+# Environment
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+
+# Backend
+backend/data/
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+
+# pnpm
+.pnpm-store/
