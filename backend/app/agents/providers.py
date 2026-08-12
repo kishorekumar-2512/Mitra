@@ -1,5 +1,6 @@
 """Provider adapters that normalize Anthropic, Groq and Gemini function calls."""
 import json
+from dataclasses import dataclass
 from typing import Any, Literal, Protocol
 import httpx
 from anthropic import AsyncAnthropic
@@ -11,6 +12,28 @@ ProviderName = Literal["anthropic", "groq", "gemini"]
 class ProviderClient(Protocol):
     """Provider-neutral boundary used by the agent loop."""
     async def create(self, *, model: str, max_tokens: int, system: str, tools: list[dict[str, Any]], messages: list[dict[str, Any]]) -> dict[str, Any]: ...
+
+
+@dataclass(frozen=True)
+class ProviderCandidate:
+    """One independently configured provider that can service an agent turn."""
+    name: ProviderName
+    api_key: str
+    model: str
+
+
+class AllProvidersFailed(RuntimeError):
+    """Raised only after every configured provider has rejected a request."""
+    def __init__(self, failures: list[tuple[str, Exception]]) -> None:
+        self.failures = failures
+        names = ", ".join(name for name, _ in failures) or "no providers"
+        super().__init__(f"All configured providers failed: {names}")
+
+
+class UnavailableProvider:
+    """Provider used when no credentials are configured; enables the local fallback path."""
+    async def create(self, **_: Any) -> dict[str, Any]:
+        raise AllProvidersFailed([])
 
 
 def _field(value: Any, name: str, default: Any = None) -> Any:
@@ -45,11 +68,16 @@ class GroqProvider:
                 groq_messages.append({"role": "assistant", "content": text or None, **({"tool_calls": calls} if calls else {})})
             elif isinstance(content, list):
                 for result in content:
-                    groq_messages.append({"role": "tool", "tool_call_id": result["tool_use_id"], "content": result["content"]})
+                    groq_messages.append({
+                        "role": "tool",
+                        "tool_call_id": result["tool_use_id"],
+                        "name": result["tool_name"],
+                        "content": result["content"],
+                    })
             else:
                 groq_messages.append({"role": "user", "content": content})
         groq_tools = [{"type": "function", "function": {"name": tool["name"], "description": tool["description"], "parameters": tool["input_schema"]}} for tool in tools]
-        response = await self.client.chat.completions.create(model=model, max_tokens=max_tokens, messages=groq_messages, tools=groq_tools)
+        response = await self.client.chat.completions.create(model=model, max_tokens=max_tokens, temperature=0.2, messages=groq_messages, tools=groq_tools)
         message = response.choices[0].message
         content = ([{"type": "text", "text": message.content}] if message.content else [])
         for call in message.tool_calls or []:
@@ -97,6 +125,22 @@ class GeminiProvider:
                 call = part["functionCall"]
                 content.append({"type": "tool_use", "id": call.get("id", f"gemini-{index}"), "name": call["name"], "input": call.get("args", {})})
         return {"content": content}
+
+
+class FailoverProvider:
+    """Try compatible configured providers in order, using each provider's own model."""
+    def __init__(self, candidates: list[ProviderCandidate]) -> None:
+        self.clients = [(candidate.name, candidate.model, build_provider(candidate.name, candidate.api_key)) for candidate in candidates]
+
+    async def create(self, **kwargs: Any) -> dict[str, Any]:
+        failures: list[tuple[str, Exception]] = []
+        for name, model, client in self.clients:
+            try:
+                # Models are not portable between providers, so never reuse the primary model here.
+                return await client.create(**{**kwargs, "model": model})
+            except Exception as exc:
+                failures.append((name, exc))
+        raise AllProvidersFailed(failures)
 
 
 def build_provider(provider: ProviderName, api_key: str) -> ProviderClient:

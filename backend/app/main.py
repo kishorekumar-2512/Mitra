@@ -3,7 +3,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from redis.asyncio import Redis
-from app.agents.providers import ProviderName, build_provider
+from app.agents.providers import FailoverProvider, ProviderCandidate, UnavailableProvider
 from app.agents.loop import InsightForgeAgent
 from app.api import router
 from app.core.config import get_settings
@@ -27,7 +27,12 @@ async def lifespan(app: FastAPI):
     app.state.memory = memory
     app.state.database = adapter
     app.state.registry = build_tool_registry(adapter)
-    app.state.agent_factory = lambda provider, api_key, model: InsightForgeAgent(build_provider(provider, api_key), app.state.registry, memory, model, provider)
+    def build_agent(candidates: list[ProviderCandidate]) -> InsightForgeAgent:
+        primary = candidates[0] if candidates else None
+        client = FailoverProvider(candidates) if candidates else UnavailableProvider()
+        return InsightForgeAgent(client, app.state.registry, memory, primary.model if primary else "", primary.name if primary else "AI service")
+
+    app.state.agent_factory = build_agent
     yield
     await adapter.engine.dispose()
     if redis:

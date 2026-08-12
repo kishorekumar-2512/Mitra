@@ -3,8 +3,31 @@
   "private": true,
   "version": "0.1.0",
   "packageManager": "pnpm@10.24.0",
-  "engines": { "node": ">=20.19" },
-  "scripts": { "dev": "vite --host 0.0.0.0", "build": "tsc -b && vite build" },
-  "dependencies": { "@vitejs/plugin-react": "latest", "vite": "latest", "typescript": "latest", "react": "^18.3.1", "react-dom": "^18.3.1", "recharts": "^2.15.0", "mermaid": "^11.4.1", "lucide-react": "^0.468.0" },
-  "devDependencies": { "@types/node": "^22.10.1", "@types/react": "^18.3.12", "@types/react-dom": "^18.3.1" }
+  "engines": {
+    "node": ">=20.19"
+  },
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "tsc -b && vite build"
+  },
+  "dependencies": {
+    "@react-three/drei": "^9.114.0",
+    "@react-three/fiber": "^8.17.0",
+    "@vitejs/plugin-react": "latest",
+    "framer-motion": "^11.12.0",
+    "lucide-react": "^0.468.0",
+    "mermaid": "^11.4.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "recharts": "^2.15.0",
+    "three": "^0.170.0",
+    "typescript": "latest",
+    "vite": "latest"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.1",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@types/three": "^0.185.4"
+  }
 }

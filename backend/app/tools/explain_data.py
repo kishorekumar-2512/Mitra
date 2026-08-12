@@ -5,8 +5,8 @@ from app.tools.base import tool_error
 
 
 class ExplainDataInput(BaseModel):
-    """Query result payload plus the original natural-language question."""
-    query_results: dict[str, Any]
+    """Trusted query payload plus the original natural-language question."""
+    query_results: dict[str, Any] = Field(default_factory=dict, description="Provided by the application from the most recent query; do not supply this argument.")
     user_question: str = Field(min_length=1)
 
 

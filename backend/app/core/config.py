@@ -15,7 +15,7 @@ env_paths = [
 
 for env_path in env_paths:
     if env_path.exists():
-        load_dotenv(env_path, override=True)
+        load_dotenv(env_path, override=False)
 
 
 class Settings(BaseSettings):
@@ -29,11 +29,12 @@ class Settings(BaseSettings):
     claude_model: str = "claude-sonnet-4-5-20250929"
     groq_model: str = "llama-3.3-70b-versatile"
     gemini_model: str = "gemini-2.5-flash"
+    voice_transcription_model: str = "whisper-large-v3-turbo"
 
 
 def get_settings() -> Settings:
     # Always reload to pick up fresh environment variables
     for env_path in env_paths:
         if env_path.exists():
-            load_dotenv(env_path, override=True)
+            load_dotenv(env_path, override=False)
     return Settings()

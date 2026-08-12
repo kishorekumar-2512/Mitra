@@ -17,3 +17,6 @@ frontend/dist/
 
 # pnpm
 .pnpm-store/
+
+# TypeScript Build Cache
+*.tsbuildinfo

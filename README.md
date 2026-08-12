@@ -1,277 +1,164 @@
-# Mitra 🚀 (Intelligent AI Database Agent & Visual Analytics Platform)
+# 🤖 Mitra — Iron Man Jarvis-Style AI Database Analyst
 
-An enterprise-grade, cinematic **Text-to-SQL AI Agent & Analytics Platform** built for modern relational database interaction and interactive visual reporting. Powered by a **JARVIS × Apple cinematic design system**, Mitra translates natural language prompts into dialect-safe SQL, executes queries through AST security guardrails, streams real-time agent reasoning steps via Server-Sent Events (SSE), renders dynamic charts & Mermaid ER diagrams, and presents an expanded 8-table relational data ecosystem.
+[![UI Style](https://img.shields.io/badge/UI%2FUX-Jarvis%20Iron%20Man%20HUD-00d4ff?style=for-the-badge&logo=react)](https://github.com)
+[![3D Engine](https://img.shields.io/badge/3D%20Engine-Three.js%20%2F%20R3F-00ffaa?style=for-the-badge&logo=three.js)](https://github.com)
+[![Tech Stack](https://img.shields.io/badge/Stack-FastAPI%20%7C%20React%20%7C%20Groq%20%7C%20Gemini-8c77ff?style=for-the-badge)](https://github.com)
 
----
-
-## 📋 Table of Contents
-- [💡 About the Project](#-about-the-project)
-- [🏗️ System Architecture](#%EF%B8%8F-system-architecture)
-- [✨ Key Features](#-key-features)
-- [⚙️ Prerequisites](#%EF%B8%8F-prerequisites)
-- [🗄️ Database & Service Installation](#%EF%B8%8F-database--service-installation)
-  - [Option A: Docker Setup (Recommended)](#option-a-docker-setup-recommended)
-  - [Option B: Manual Local Setup](#option-b-manual-local-setup)
-- [🐍 Backend Setup (FastAPI & Python)](#-backend-setup-fastapi--python)
-- [💻 Frontend Setup (React, Vite & Canvas)](#-frontend-setup-react-vite--canvas)
-- [☁️ Render Cloud Deployment](#%EF%B8%8F-render-cloud-deployment)
-- [🔑 Environment Variables](#-environment-variables)
-- [🔌 API Endpoints & Usage](#-api-endpoints--usage)
-- [🔒 Security & Guardrails](#-security--guardrails)
-- [❓ Troubleshooting](#-troubleshooting)
+**Mitra** is a local-first, natural language AI Database Analyst featuring a **stunning, futuristic 3D Jarvis-style UI/UX (Iron Man HUD aesthetic)**. Ask questions in plain English or via voice, and watch Mitra generate safe read-only SQL, stream reasoning steps, render dynamic charts, and provide full database exploration.
 
 ---
 
-## 💡 About the Project
+## 🎬 Application Demo & Visuals
 
-Traditional database interaction requires complex SQL syntax or long wait times for data engineering reports. **Mitra** bridges this gap by providing a secure, natural language interface to explore, analyze, and visualize complex relational databases.
+### 🔴 Demonstration Video
+<!-- Replace demo.mp4 and demo-thumbnail.png with your video/image file names -->
+<p align="center">
+  <video src="demo.mp4" controls width="100%" poster="demo-thumbnail.png">
+    Your browser does not support the video tag.
+  </video>
+</p>
 
-### Key Architectural Highlights:
-- 🧠 **Multi-Provider AI Brain**: Native integration with Anthropic Claude (Sonnet 4.5), Groq (Llama 3.1), and Google Gemini (3.6 Flash) with client-side or server-side key fallback.
-- 🛠️ **Tool Registry & AST Guardrails**: Safely inspects database schemas (`get_schema`), executes validated SELECT queries (`execute_query`), synthesizes findings (`explain_data`), and generates dynamic charts (`generate_chart`) and ER diagrams (`generate_flowchart`).
-- ⚡ **Real-Time SSE Streaming**: Stream reasoning tokens, SQL queries, interactive Recharts visualizations, and Mermaid flowchart definitions straight to the client with sub-second feedback.
-- 🌌 **Cinematic JARVIS × Apple Experience**: Interactive 3D neural constellation canvas, fluid 8-point morphing AI orb, 3D perspective tilt cards, message materialization animations, and dynamic cursor energy field.
-- 🗄️ **Rich E-Commerce Database Ecosystem**: Pre-seeded with 8 interconnected tables (Categories, Products, Customers, Orders, Order Items, Sales, Reviews, Employees) containing 483+ realistic records.
+### 📸 Application Interface Screenshots
+<!-- Add your images directly into the project root or folder and update filenames below -->
+
+#### 1. Jarvis 3D HUD Chat Interface & Streaming SQL
+![Jarvis 3D HUD Chat Interface](chat-interface.png)
+*Featuring 3D particle constellation, rotating energy rings, holographic infinite grid floor, dynamic arc-reactor JarvisOrb, scanline thinking overlays, and streaming SQL execution.*
+
+#### 2. Searchable Database Explorer & Schema Inspector
+![Database Explorer](database-explorer.png)
+*Interactive schema inspection, foreign key mapping, data type badges, and 50-row preview table.*
+
+#### 3. Real-Time Analytics Dashboard
+![Analytics Dashboard](analytics-dashboard.png)
+*14 live data-backed Recharts cards with interactive hover effects and metric cards.*
+
+#### 4. Voice Dictation Engine & Waveforms
+![Voice Dictation Engine](voice-dictation.png)
+*Microphone ripple animation, live waveform visualizer, silence detection, and Groq Whisper proxy transcription.*
 
 ---
 
-## 🏗️ System Architecture
+## 🚀 The Jarvis UI/UX Experience
 
-```mermaid
-flowchart LR
-    subgraph Client ["Frontend (React 18 + Vite + Canvas)"]
-        UI["JARVIS x Apple Glassmorphic UI"]
-        BG["3D Neural Constellation Canvas"]
-        CHART["Recharts + Mermaid Renderer"]
-    end
+The entire frontend interface has been built to replicate the **Iron Man / Stark Industries HUD** experience:
 
-    subgraph API ["FastAPI Gateway"]
-        SSE["/api/chat (SSE Stream)"]
-        SUGG["/api/suggestions"]
-        STATS["/api/stats"]
-    end
+- **🌌 3D Neural Constellation & Floor Grid**: Powered by Three.js / React Three Fiber with 600 drifting instanced particles, 3 concentric animated torus energy rings, and an infinite floor grid.
+- **🔮 Interactive `JarvisOrb`**: An arc-reactor glowing core in the chat header that accelerates rotation and pulses with energy whenever the AI is reasoning or running queries.
+- **💎 Glassmorphism & Neon Cyan Palette**: Dark void theme (`#020408`) overlaid with frosted glass panels (`backdrop-filter: blur(24px)`), electric blue borders, violet accents, and pulse-glowing status indicators.
+- **⚡ Scanline & Materialization FX**: Live top-to-bottom scanline animation during bot thinking states, and smooth Framer Motion spring materialization on incoming message cards.
+- **🎙️ HUD Audio Visualizer**: Microphone button with red/blue pulsating ripple animations and live audio waveform bars during speech dictation.
 
-    subgraph Agent ["Mitra ReAct Agent Loop"]
-        PROV["LLM Provider (Anthropic / Groq / Gemini)"]
-        MEM["Session Memory (Redis / Fallback)"]
-        GUARD["SQLGlot AST Guardrails"]
-    end
+---
 
-    subgraph DB ["Database Tier"]
-        SQLDB[(SQLAlchemy / SQLite / Postgres)]
-    end
+## 🔥 Key Features
 
-    UI <-->|Natural Language Prompts| SSE
-    SSE <--> PROV
-    PROV -->|Tool Calling| GUARD
-    GUARD -->|Validated SELECT| SQLDB
-    SQLDB -->|Rows & Metadata| PROV
-    PROV -->|Stream Events: token, sql, chart, diagram| SSE
-    SSE --> CHART
-    SUGG --> UI
-    STATS --> UI
+- **🗣️ Natural Language to SQL**: Ask questions in plain language; Mitra translates your intent into safe read-only SQL queries.
+- **🛡️ SQLGlot Read-Only Safety**: Strict AST parsing blocks any `DROP`, `DELETE`, `UPDATE`, or state-altering statements.
+- **⚡ Real-Time SSE Streaming**: Live status feedback (*Understanding question...*, *Generating SQL...*, *Executing query...*) streamed direct to the chat bubble.
+- **📊 Automatic Visualizations**: Generates inline Bar, Line, Pie, and Area charts (Recharts) and ER diagrams (Mermaid.js).
+- **🤖 Multi-LLM Failover**: Automatically switches between **Groq** (`llama-3.3-70b`), **Google Gemini** (`gemini-2.5-flash`), and **Anthropic Claude**.
+- **🎙️ Voice Dictation (Dual Engine)**: Browser Web Speech API (zero key) or Groq Whisper (`whisper-large-v3-turbo`) with silence detection & auto-punctuation.
+- **🔍 Database Explorer**: Search tables and columns, inspect schema data types, and preview up to 50 rows.
+- **📈 Analytics Dashboard**: 14 live charts tracking monthly revenue, category sales, customer tiers, low-stock items, and employee metrics.
+
+---
+
+## 🏗️ Architecture
+
+```text
+┌─────────────────────────────────────────────────────────────────────────┐
+│              Frontend: React + Vite + Three.js / R3F                    │
+│   (Jarvis 3D HUD, Arc Reactor Orb, Framer Motion, Recharts, Mermaid)   │
+└────────────────────────────────────┬────────────────────────────────────┘
+                                     │ SSE Stream / HTTP
+┌────────────────────────────────────▼────────────────────────────────────┐
+│                       FastAPI Backend Server                            │
+│           (Agent Controller, SQLGlot Safety, Voice Proxy)               │
+└─────────┬──────────────────────────┬──────────────────────────┬─────────┘
+          │                          │                          │
+┌─────────▼──────────┐     ┌─────────▼──────────┐     ┌─────────▼──────────┐
+│ SQLGlot Guardrails │     │ SQLite / SQLAlchemy│     │  Multi-LLM Engine  │
+│ (Read-Only Safety) │     │ Database Layer     │     │(Groq/Gemini/Claude)│
+└────────────────────┘     └────────────────────┘     └────────────────────┘
 ```
 
 ---
 
-## ✨ Key Features
+## ⚡ Quick Start
 
-- **Natural Language to SQL**: Converts intuitive prompts into optimized, dialect-specific SQL statements.
-- **AST Parsing & Security Guardrails**: Uses `SQLGlot` to validate query structure, strictly allow `SELECT` statements, and block any illegal mutations (`DROP`, `UPDATE`, `INSERT`, `DELETE`).
-- **8-Table Relational Schema**: 
-  - `categories`: Product category hierarchy.
-  - `products`: Items with prices, unit costs, inventory stock, and ratings.
-  - `customers`: Global customer profiles with tier classifications (`Gold`, `Silver`, `Bronze`).
-  - `orders`: Order tracking with statuses (`completed`, `shipped`, `pending`, `cancelled`) and payment methods.
-  - `order_items`: Transaction line items with unit pricing and discount rates.
-  - `sales`: Daily aggregated revenue performance metrics.
-  - `reviews`: Customer product reviews (ratings 1–5).
-  - `employees`: Organization staff data with salaries and manager hierarchy.
-- **Categorized Query Suggestions**: Offers 25+ pre-built natural language queries grouped across 6 domains (Sales & Revenue, Customer Analytics, Product Insights, Order Analysis, Employee & Organization, Relationships & Diagrams).
-- **Dynamic Charting & ER Flowcharts**: Generates Bar, Line, Pie, and Scatter charts via `Recharts` and produces live entity-relationship diagrams using `Mermaid.js`.
-- **Bring Your Own Key (BYOK)**: Supports browser-level API key entry for Anthropic, Groq, or Gemini without logging or persisting credentials to storage.
-- **JARVIS × Apple UI/UX**: Includes responsive glassmorphism, 3D particle constellation, morphing AI orb, cursor aura, and 3D card tilt effects.
+### 1. Configure Environment (`.env`)
+Copy `.env.example` to `.env` in the project root:
+```env
+GROQ_API_KEY=your_groq_api_key
+GROQ_MODEL=llama-3.3-70b-versatile
+VOICE_TRANSCRIPTION_MODEL=whisper-large-v3-turbo
 
----
+# Optional:
+GEMINI_API_KEY=your_gemini_key
+ANTHROPIC_API_KEY=your_anthropic_key
+```
 
-## ⚙️ Prerequisites
-
-Before running Mitra, ensure you have the following installed:
-
-- **Python**: Version `3.11` or higher
-- **Node.js**: Version `18.0` or higher (with `npm` v9+ or `pnpm`)
-- **Docker & Docker Compose**: (Optional, recommended for zero-config startup)
-- **API Key**: At least one API key from Anthropic, Groq, or Google Gemini AI Studio.
+For Groq voice dictation, create `frontend/.env`:
+```env
+VITE_VOICE_TRANSCRIBER=groq
+VITE_VOICE_AUTO_SEND=false
+VITE_VOICE_PUNCTUATION=true
+```
 
 ---
 
-## 🗄️ Database & Service Installation
+### 2. Run the Application
 
-### Option A: Docker Setup (Recommended)
+#### 💻 Windows (PowerShell)
 
-Run the full stack (FastAPI backend, React frontend, and Redis cache) using Docker Compose:
+**Terminal 1 (Backend):**
+```powershell
+cd backend
+python -m uvicorn app.main:app --reload --port 8000
+```
+
+**Terminal 2 (Frontend):**
+```powershell
+cd frontend
+npm.cmd install
+npm.cmd run dev
+```
+
+#### 🐧 Linux / macOS / WSL
+
+**Terminal 1 (Backend):**
+```bash
+cd backend
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+```
+
+**Terminal 2 (Frontend):**
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Open `http://localhost:5173` to launch the **Jarvis HUD AI Database Analyst**!
+
+---
+
+## 🧪 Testing & Verification
 
 ```bash
-# Clone the repository
-git clone https://github.com/kishorekumar-2512/Mitra.git
-cd Mitra
+# Backend unit tests
+cd backend && pytest -q
 
-# Start all services
-docker-compose up --build -d
-```
-
-Access the UI at `http://localhost:5173` and backend health check at `http://localhost:8000/api/health`.
-
-To stop the environment:
-```bash
-docker-compose down
+# Frontend build & type check
+cd frontend && npm run build
 ```
 
 ---
 
-### Option B: Manual Local Setup
+## 📜 License & Disclaimer
 
-#### 1. Redis Setup (Optional)
-Redis is used for session memory and chart pinning. If Redis is unavailable, Mitra automatically falls back to an in-memory store.
-
-- **Windows (WSL / Docker)**: `docker run -d -p 6379:6379 redis:7-alpine`
-- **macOS**: `brew install redis && brew services start redis`
-- **Linux**: `sudo apt install redis-server && sudo systemctl start redis-server`
-
----
-
-## 🐍 Backend Setup (FastAPI & Python)
-
-1. **Navigate to backend directory**:
-   ```bash
-   cd backend
-   ```
-
-2. **Activate existing environment or create a new one (`.venv`)**:
-   - **Linux / WSL / macOS (Bash/Zsh)**:
-     ```bash
-     source .venv/bin/activate
-     # Or if creating a new venv:
-     # python3 -m venv .venv && source .venv/bin/activate
-     ```
-   - **Windows (PowerShell)**:
-     ```powershell
-     .\.venv\Scripts\activate
-     # Or if creating a new venv:
-     # python -m venv .venv && .\.venv\Scripts\activate
-     ```
-
-3. **Install Python dependencies**:
-   ```bash
-   pip install --upgrade pip
-   pip install -r requirements.txt
-   ```
-
-4. **Set environment variables**:
-   Copy `.env.example` to `.env` in the root or backend directory:
-   ```bash
-   cp .env.example .env
-   ```
-   Add your preferred API key (`GEMINI_API_KEY`, `ANTHROPIC_API_KEY`, or `GROQ_API_KEY`).
-
-5. **Start the FastAPI Backend**:
-   ```bash
-   uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
-   ```
-
----
-
-## 💻 Frontend Setup (React, Vite & Canvas)
-
-1. **Navigate to frontend directory**:
-   ```bash
-   cd frontend
-   ```
-
-2. **Install Node dependencies**:
-   ```bash
-   npm install
-   ```
-
-3. **Start the Vite development server**:
-   ```bash
-   npm run dev
-   ```
-
-4. Open your browser and navigate to `http://localhost:5173`.
-
----
-
-## ☁️ Render Cloud Deployment
-
-Mitra can be deployed effortlessly using Docker or Render's web service platform:
-
-1. Connect your GitHub repository (`kishorekumar-2512/Mitra`) to Render.
-2. **Backend Web Service**:
-   - Build Command: `pip install -r backend/requirements.txt`
-   - Start Command: `uvicorn app.main:app --host 0.0.0.0 --port 8000`
-   - Set environment variables (`GEMINI_API_KEY`, `CLAUDE_MODEL`, etc.).
-3. **Frontend Static Site**:
-   - Build Command: `cd frontend && npm install && npm run build`
-   - Publish Directory: `frontend/dist`
-
----
-
-## 🔑 Environment Variables
-
-The backend application reads configuration from `.env`:
-
-| Variable | Type | Default Value | Description |
-|---|---|---|---|
-| `ANTHROPIC_API_KEY` | String | `""` | Optional server-configured Anthropic API Key |
-| `GROQ_API_KEY` | String | `""` | Optional server-configured Groq API Key |
-| `GEMINI_API_KEY` | String | `""` | Optional server-configured Gemini API Key |
-| `CLAUDE_MODEL` | String | `claude-sonnet-4-5-20250929` | Model ID for Anthropic provider |
-| `GROQ_MODEL` | String | `llama-3.1-8b-instant` | Model ID for Groq provider |
-| `GEMINI_MODEL` | String | `gemini-3.6-flash` | Model ID for Gemini provider |
-| `DATABASE_URL` | String | `sqlite+aiosqlite:///./data/mitra.db` | SQLAlchemy async connection URL |
-| `REDIS_URL` | String | `redis://localhost:6379/0` | Connection string for Redis session store |
-
----
-
-## 🔌 API Endpoints & Usage
-
-| Method | Endpoint | Description |
-|---|---|---|
-| `GET` | `/api/health` | Service status check (`{"status": "ok", "service": "mitra"}`) |
-| `GET` | `/api/schema` | Returns full table schema and foreign key relationships |
-| `GET` | `/api/suggestions` | Returns 25+ categorized natural language sample queries |
-| `GET` | `/api/stats` | Returns real-time row counts for all database tables |
-| `POST` | `/api/chat` | Server-Sent Events (SSE) stream for agent reasoning, SQL, charts & diagrams |
-| `GET` | `/api/sessions/{id}` | Fetches conversation state and pinned chart dashboards |
-| `POST` | `/api/sessions/{id}/pins` | Pins a chart configuration to the user's dashboard |
-| `PUT` | `/api/sessions/{id}/pins` | Updates dashboard chart ordering |
-
----
-
-## 🔒 Security & Guardrails
-
-- **AST Validation**: `SQLGlot` parses generated SQL queries prior to execution to enforce strict `SELECT`-only permissions and eliminate multi-statement injection risks.
-- **Read-Only Engine Isolation**: Database interactions execute within read-only transactions.
-- **Client-Side Key Confidentiality**: User-supplied API keys in the settings modal are sent directly via request headers and are **never** logged or saved to Redis/disk.
-- **Self-Correcting Loop**: When a database query fails syntax or execution check, Mitra automatically feeds the error trace back to the agent for a self-correction attempt.
-
----
-
-## ❓ Troubleshooting
-
-1. **Error: Missing API Key**
-   - Ensure you have added at least one valid API key in `.env` or entered it into the frontend Settings modal.
-
-2. **Error: Script execution disabled on Windows**
-   - Run PowerShell commands with `-ExecutionPolicy Bypass`:
-     ```powershell
-     powershell -ExecutionPolicy Bypass -Command "npm run dev"
-     ```
-
-3. **Backend cannot find SQLite database**
-   - SQLite database is generated automatically on first startup. Check that `backend/data` directory has write permissions.
-
----
-
-*Made with React, TypeScript, FastAPI, SQLAlchemy, SQLGlot, and Recharts.*
+Mitra is an AI-powered database assistant designed for read-only analytical queries. All generated queries are AST-checked via SQLGlot to prevent unauthorized database modifications.

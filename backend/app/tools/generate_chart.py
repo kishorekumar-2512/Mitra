@@ -5,9 +5,9 @@ from app.tools.base import tool_error
 
 
 class GenerateChartInput(BaseModel):
-    """Input data and field mapping for an inline Recharts visualization."""
+    """Trusted query data plus model-selected field mapping for an inline chart."""
     chart_type: Literal["bar", "line", "pie", "scatter"]
-    data: list[dict[str, Any]] = Field(default_factory=list)
+    data: list[dict[str, Any]] = Field(default_factory=list, description="Provided by the application from the most recent query; do not supply this argument.")
     x_field: str
     y_field: str
     title: str = Field(default="Chart", max_length=160)

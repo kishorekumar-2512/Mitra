@@ -28,9 +28,9 @@ def build_tool_registry(adapter: DatabaseAdapter) -> dict[str, ToolDefinition]:
     return {
         "get_schema": ToolDefinition("get_schema", "Inspect database tables, columns and foreign keys before querying.", GetSchemaInput, lambda p: get_schema(adapter, p)),
         "execute_query": ToolDefinition("execute_query", "Run one read-only SELECT query. Never use writes.", ExecuteQueryInput, lambda p: execute_query(adapter, p)),
-        "generate_chart": ToolDefinition("generate_chart", "Create a Recharts-ready chart specification from result rows.", GenerateChartInput, generate_chart),
+        "generate_chart": ToolDefinition("generate_chart", "Create a Recharts-ready chart from the most recent query. Provide chart_type, x_field, y_field, and title only; the application supplies the trusted query rows.", GenerateChartInput, generate_chart),
         "generate_flowchart": ToolDefinition("generate_flowchart", "Create a Mermaid ER, process, or decision diagram.", GenerateFlowchartInput, generate_flowchart),
-        "explain_data": ToolDefinition("explain_data", "Summarize query results in concise plain language.", ExplainDataInput, explain_data),
+        "explain_data": ToolDefinition("explain_data", "Summarize the most recent query in concise plain language. Provide user_question only; the application supplies the trusted query result.", ExplainDataInput, explain_data),
     }
 
 
