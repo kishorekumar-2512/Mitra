@@ -8,46 +8,41 @@
 
 ---
 
-## 🎬 Application Video Demo & Visual Showcase
+## 🎬 Application Video Demo
 
-### 🔴 Complete Application Demonstration Video
-https://github.com/user-attachments/assets/demo-video.mp4
+![Mitra Application Video Demo](assets/demo.gif)
 
-<p align="center">
-  <video src="assets/demo-video.mp4" controls width="100%" poster="assets/chat-interface.png">
-    Your browser does not support HTML5 video. You can view the video file directly at <a href="assets/demo-video.mp4">assets/demo-video.mp4</a>.
-  </video>
-</p>
+*Full application walkthrough showing real-time 3D Jarvis HUD, natural language to SQL conversion, streaming execution, Recharts visualizations, and database schema explorer.*
 
 ---
 
-### 📸 Application Interface Screenshots
+## 📸 Application Interface Screenshots
 
-#### 1. 🌌 Jarvis 3D HUD Chat Interface & Live SSE Streaming
+### 1. 🌌 Jarvis 3D HUD Chat Interface & Live SSE Streaming
 ![Jarvis 3D HUD Chat Interface](assets/chat-interface.png)
 *Features a 3D neural constellation background, rotating energy rings, infinite holographic grid floor, arc-reactor `JarvisOrb`, real-time scanline thinking indicators, and streaming SQL execution.*
 
 ---
 
-#### 2. 🎙️ Voice Dictation Engine & Waveforms
+### 2. 🎙️ Voice Dictation Engine & Waveforms
 ![Voice Dictation Engine](assets/voice-dictation.png)
 *Microphone input bar with glowing visualizer, keyboard shortcuts (`Enter` send, `Shift` + `Enter` newline), provider settings toggle, and dual-engine voice transcription.*
 
 ---
 
-#### 3. 🔍 Searchable Database Explorer & Schema Inspector
+### 3. 🔍 Searchable Database Explorer & Schema Inspector
 ![Database Explorer](assets/database-explorer.png)
 *Interactive schema inspection, foreign key mapping, column data-type badges, search filtering, and instant 50-row table previews.*
 
 ---
 
-#### 4. 📊 Real-Time Analytics Dashboard
+### 4. 📊 Real-Time Analytics Dashboard
 ![Analytics Dashboard](assets/analytics-dashboard.png)
 *Curated library of live data-backed Recharts visual cards (Line, Bar, Pie) with PNG export, CSV download, and interactive pinning.*
 
 ---
 
-#### 5. 💬 Sidebar & Conversation History
+### 5. 💬 Sidebar & Conversation History
 ![Sidebar History](assets/sidebar-history.png)
 *Searchable 7-day conversation history, quick workspace status monitors, and one-click thread navigation.*
 
