@@ -21,7 +21,5 @@ frontend/dist/
 # TypeScript Build Cache
 *.tsbuildinfo
 
-# Media Files (Ignore 175MB large video files for GitHub push compatibility)
-*.mp4
-*.webm
-.gitattributes
+# Raw Uncompressed Large Video File
+/Video Project 5.mp4
