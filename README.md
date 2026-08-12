@@ -1,164 +1,161 @@
 # 🤖 Mitra — Iron Man Jarvis-Style AI Database Analyst
 
-[![UI Style](https://img.shields.io/badge/UI%2FUX-Jarvis%20Iron%20Man%20HUD-00d4ff?style=for-the-badge&logo=react)](https://github.com)
-[![3D Engine](https://img.shields.io/badge/3D%20Engine-Three.js%20%2F%20R3F-00ffaa?style=for-the-badge&logo=three.js)](https://github.com)
-[![Tech Stack](https://img.shields.io/badge/Stack-FastAPI%20%7C%20React%20%7C%20Groq%20%7C%20Gemini-8c77ff?style=for-the-badge)](https://github.com)
+[![UI Style](https://img.shields.io/badge/UI%2FUX-Jarvis%20Iron%20Man%20HUD-00d4ff?style=for-the-badge&logo=react)](https://github.com/kishorekumar-2512/Mitra)
+[![3D Engine](https://img.shields.io/badge/3D%20Engine-Three.js%20%2F%20R3F-00ffaa?style=for-the-badge&logo=three.js)](https://github.com/kishorekumar-2512/Mitra)
+[![Tech Stack](https://img.shields.io/badge/Stack-FastAPI%20%7C%20React%20%7C%20Groq%20%7C%20Gemini%20%7C%20Claude-8c77ff?style=for-the-badge)](https://github.com/kishorekumar-2512/Mitra)
 
-**Mitra** is a local-first, natural language AI Database Analyst featuring a **stunning, futuristic 3D Jarvis-style UI/UX (Iron Man HUD aesthetic)**. Ask questions in plain English or via voice, and watch Mitra generate safe read-only SQL, stream reasoning steps, render dynamic charts, and provide full database exploration.
-
----
-
-## 🎬 Application Demo & Visuals
-
-### 🔴 Demonstration Video
-<!-- Replace demo.mp4 and demo-thumbnail.png with your video/image file names -->
-<p align="center">
-  <video src="demo.mp4" controls width="100%" poster="demo-thumbnail.png">
-    Your browser does not support the video tag.
-  </video>
-</p>
-
-### 📸 Application Interface Screenshots
-<!-- Add your images directly into the project root or folder and update filenames below -->
-
-#### 1. Jarvis 3D HUD Chat Interface & Streaming SQL
-![Jarvis 3D HUD Chat Interface](chat-interface.png)
-*Featuring 3D particle constellation, rotating energy rings, holographic infinite grid floor, dynamic arc-reactor JarvisOrb, scanline thinking overlays, and streaming SQL execution.*
-
-#### 2. Searchable Database Explorer & Schema Inspector
-![Database Explorer](database-explorer.png)
-*Interactive schema inspection, foreign key mapping, data type badges, and 50-row preview table.*
-
-#### 3. Real-Time Analytics Dashboard
-![Analytics Dashboard](analytics-dashboard.png)
-*14 live data-backed Recharts cards with interactive hover effects and metric cards.*
-
-#### 4. Voice Dictation Engine & Waveforms
-![Voice Dictation Engine](voice-dictation.png)
-*Microphone ripple animation, live waveform visualizer, silence detection, and Groq Whisper proxy transcription.*
+**Mitra** is a high-performance, local-first natural language AI Database Analyst featuring a **futuristic 3D Jarvis-style UI/UX (Iron Man HUD aesthetic)**. Ask database questions in plain English or via voice, and watch Mitra execute safe read-only SQL, stream reasoning steps via Server-Sent Events (SSE), render dynamic interactive charts, and provide comprehensive database exploration.
 
 ---
 
-## 🚀 The Jarvis UI/UX Experience
+## 📸 Application Interface & Visual Showcase
 
-The entire frontend interface has been built to replicate the **Iron Man / Stark Industries HUD** experience:
-
-- **🌌 3D Neural Constellation & Floor Grid**: Powered by Three.js / React Three Fiber with 600 drifting instanced particles, 3 concentric animated torus energy rings, and an infinite floor grid.
-- **🔮 Interactive `JarvisOrb`**: An arc-reactor glowing core in the chat header that accelerates rotation and pulses with energy whenever the AI is reasoning or running queries.
-- **💎 Glassmorphism & Neon Cyan Palette**: Dark void theme (`#020408`) overlaid with frosted glass panels (`backdrop-filter: blur(24px)`), electric blue borders, violet accents, and pulse-glowing status indicators.
-- **⚡ Scanline & Materialization FX**: Live top-to-bottom scanline animation during bot thinking states, and smooth Framer Motion spring materialization on incoming message cards.
-- **🎙️ HUD Audio Visualizer**: Microphone button with red/blue pulsating ripple animations and live audio waveform bars during speech dictation.
+### 1. 🌌 Jarvis 3D HUD Chat Interface & Live SSE Streaming
+![Jarvis 3D HUD Chat Interface](assets/chat-interface.png)
+*Features a 3D neural constellation background, rotating energy rings, infinite holographic grid floor, arc-reactor `JarvisOrb`, real-time scanline thinking indicators, and streaming SQL execution.*
 
 ---
 
-## 🔥 Key Features
-
-- **🗣️ Natural Language to SQL**: Ask questions in plain language; Mitra translates your intent into safe read-only SQL queries.
-- **🛡️ SQLGlot Read-Only Safety**: Strict AST parsing blocks any `DROP`, `DELETE`, `UPDATE`, or state-altering statements.
-- **⚡ Real-Time SSE Streaming**: Live status feedback (*Understanding question...*, *Generating SQL...*, *Executing query...*) streamed direct to the chat bubble.
-- **📊 Automatic Visualizations**: Generates inline Bar, Line, Pie, and Area charts (Recharts) and ER diagrams (Mermaid.js).
-- **🤖 Multi-LLM Failover**: Automatically switches between **Groq** (`llama-3.3-70b`), **Google Gemini** (`gemini-2.5-flash`), and **Anthropic Claude**.
-- **🎙️ Voice Dictation (Dual Engine)**: Browser Web Speech API (zero key) or Groq Whisper (`whisper-large-v3-turbo`) with silence detection & auto-punctuation.
-- **🔍 Database Explorer**: Search tables and columns, inspect schema data types, and preview up to 50 rows.
-- **📈 Analytics Dashboard**: 14 live charts tracking monthly revenue, category sales, customer tiers, low-stock items, and employee metrics.
+### 2. 🔍 Searchable Database Explorer & Schema Inspector
+![Database Explorer](assets/database-explorer.png)
+*Interactive schema inspection, foreign key mapping, column data-type badges, search filtering, and instant 50-row table previews.*
 
 ---
 
-## 🏗️ Architecture
+### 3. 📊 Real-Time Analytics Dashboard
+![Analytics Dashboard](assets/analytics-dashboard.png)
+*Curated library of live data-backed Recharts visual cards (Line, Bar, Pie) with PNG export, CSV download, and interactive pinning.*
 
-```text
-┌─────────────────────────────────────────────────────────────────────────┐
-│              Frontend: React + Vite + Three.js / R3F                    │
-│   (Jarvis 3D HUD, Arc Reactor Orb, Framer Motion, Recharts, Mermaid)   │
-└────────────────────────────────────┬────────────────────────────────────┘
-                                     │ SSE Stream / HTTP
-┌────────────────────────────────────▼────────────────────────────────────┐
-│                       FastAPI Backend Server                            │
-│           (Agent Controller, SQLGlot Safety, Voice Proxy)               │
-└─────────┬──────────────────────────┬──────────────────────────┬─────────┘
-          │                          │                          │
-┌─────────▼──────────┐     ┌─────────▼──────────┐     ┌─────────▼──────────┐
-│ SQLGlot Guardrails │     │ SQLite / SQLAlchemy│     │  Multi-LLM Engine  │
-│ (Read-Only Safety) │     │ Database Layer     │     │(Groq/Gemini/Claude)│
-└────────────────────┘     └────────────────────┘     └────────────────────┘
+---
+
+### 4. 💬 Sidebar & Conversation History
+![Sidebar History](assets/sidebar-history.png)
+*Searchable 7-day conversation history, quick workspace status monitors, and one-click thread navigation.*
+
+---
+
+## 🔄 Agent & Pipeline Architecture
+
+```mermaid
+flowchart TD
+    User([User Question / Voice Input]) --> Frontend[React 18 + R3F Jarvis HUD]
+    Frontend -->|POST /api/chat - SSE Stream| Backend[FastAPI Backend Core]
+    
+    subgraph Agent Loop & Multi-LLM Failover
+        Backend --> PreCheck{Conversational / Out-of-Bound?}
+        PreCheck -->|Greeting/Scope Check| QuickReply[Instant Conversational Response]
+        PreCheck -->|Database Query| ProviderSelect[Select Primary LLM Candidate]
+        
+        ProviderSelect -->|Attempt 1| Groq[Groq Llama-3.3-70B]
+        Groq -->|Rate Limit / 429| Gemini[Gemini 2.5 Flash]
+        Gemini -->|Format Error / Key Missing| Claude[Anthropic Claude 4.5]
+        Claude -->|All Failed| Offline[Built-In Reviewed Offline Analysis]
+        
+        Groq -->|Success| ModelOutput[Tool Calls / Response]
+        Gemini -->|Success| ModelOutput
+        Claude -->|Success| ModelOutput
+    end
+    
+    subgraph Tool Execution & Guardrails
+        ModelOutput --> ToolCheck{Tool Requested?}
+        ToolCheck -->|get_schema| DB_Schema[Inspect Schema & Foreign Keys]
+        ToolCheck -->|execute_query| SQL_Guard[SQLGlot Read-Only Guardrail]
+        ToolCheck -->|generate_chart| Chart_Gen[Recharts Specification Generator]
+        ToolCheck -->|generate_flowchart| Mermaid_Gen[Mermaid ER & Flowchart Renderer]
+        ToolCheck -->|explain_data| Insight_Gen[Grounded Plain-Text Summary]
+        
+        SQL_Guard -->|Pass SELECT Only| SQLite[(SQLite Database)]
+        SQL_Guard -->|Fail Non-SELECT| ErrorReturn[Return Guardrail Violation Error]
+    end
+    
+    SQLite --> ResultTable[Return Query Rows & Columns]
+    ResultTable --> Frontend
+    Chart_Gen --> Frontend
+    Insight_Gen --> Frontend
+    QuickReply --> Frontend
 ```
 
 ---
 
-## ⚡ Quick Start
+## ⚡ Multi-LLM Failover Engine & API Compatibility
 
-### 1. Configure Environment (`.env`)
-Copy `.env.example` to `.env` in the project root:
+Mitra features an **agentic tool-calling loop** with intelligent failover across multiple state-of-the-art LLM providers:
+
+1. **Groq (`llama-3.3-70b-versatile`)**: Ultra-fast tool-calling inference.
+2. **Google Gemini (`gemini-2.5-flash`)**: High-throughput reasoning fallback with custom recursive JSON Schema sanitizer that strips unsupported keywords (`$defs`, `title`, `default`, `anyOf`).
+3. **Anthropic Claude (`claude-sonnet-4-5`)**: Precision analytical reasoning.
+4. **Deterministic Offline Fallback**: If upstream provider quotas or keys are exhausted, Mitra safely runs built-in read-only analytical queries without inventing or fabricating answers.
+
+---
+
+## 🛡️ SQL Security & Read-Only Guardrails
+
+Safety is built into the parser level:
+- **AST Parsing**: Powered by `sqlglot` to parse incoming SQL into Abstract Syntax Trees.
+- **Strict Read-Only Enforcement**: Any query containing `DROP`, `DELETE`, `UPDATE`, `INSERT`, `ALTER`, or multi-statement execution is instantly rejected before reaching the database.
+- **Result Row Truncation**: Capped at 500 rows to prevent memory exhaustion and browser freeze.
+
+---
+
+## 🚀 The Jarvis 3D HUD UI/UX Experience
+
+- **🌌 3D Neural Constellation & Floor Grid**: Built with Three.js / React Three Fiber featuring 600 drifting instanced particles, concentric torus energy rings, and an infinite floor grid.
+- **🔮 Interactive `JarvisOrb`**: Arc-reactor glowing core in the chat header that accelerates rotation and pulses with energy during agent execution.
+- **💎 Glassmorphism & Neon Cyan Palette**: Dark void theme (`#020408`) overlaid with frosted glass panels (`backdrop-filter: blur(24px)`), electric blue borders, and neon cyan accents.
+- **🎙️ HUD Audio Visualizer**: Microphone button with pulsating ripple animations and live audio waveform bars during speech dictation.
+
+---
+
+## 💻 Tech Stack
+
+- **Frontend**: React 18, Vite, TypeScript, Three.js, React Three Fiber, Recharts, Mermaid.js, Lucide Icons, Vanilla CSS.
+- **Backend**: Python 3.12, FastAPI, SQLAlchemy, SQLGlot, AsyncHTTPX, Pydantic v2.
+- **LLM Integrations**: Groq SDK, Anthropic SDK, Gemini REST API, Groq Whisper API.
+
+---
+
+## ⚙️ Setup & Installation
+
+### 1. Environment Configuration (`.env`)
+Create a `.env` file in the project root:
+
 ```env
-GROQ_API_KEY=your_groq_api_key
+GROQ_API_KEY=your_groq_api_key_here
 GROQ_MODEL=llama-3.3-70b-versatile
+
+GEMINI_API_KEY=your_gemini_api_key_here
+GEMINI_MODEL=gemini-2.5-flash
+
+ANTHROPIC_API_KEY=your_anthropic_api_key_here
+CLAUDE_MODEL=claude-sonnet-4-5-20250929
+
+DATABASE_URL=sqlite+aiosqlite:///./data/insightforge.db
+REDIS_URL=redis://localhost:6379/0
 VOICE_TRANSCRIPTION_MODEL=whisper-large-v3-turbo
-
-# Optional:
-GEMINI_API_KEY=your_gemini_key
-ANTHROPIC_API_KEY=your_anthropic_key
 ```
 
-For Groq voice dictation, create `frontend/.env`:
-```env
-VITE_VOICE_TRANSCRIBER=groq
-VITE_VOICE_AUTO_SEND=false
-VITE_VOICE_PUNCTUATION=true
-```
+### 2. Running Locally
 
----
-
-### 2. Run the Application
-
-#### 💻 Windows (PowerShell)
-
-**Terminal 1 (Backend):**
-```powershell
-cd backend
-python -m uvicorn app.main:app --reload --port 8000
-```
-
-**Terminal 2 (Frontend):**
-```powershell
-cd frontend
-npm.cmd install
-npm.cmd run dev
-```
-
-#### 🐧 Linux / macOS / WSL
-
-**Terminal 1 (Backend):**
+#### 🐍 Backend (FastAPI)
 ```bash
 cd backend
-python3 -m venv .venv
-source .venv/bin/activate
+python -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 pip install -r requirements.txt
-uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+uvicorn app.main:app --reload --port 8000
 ```
 
-**Terminal 2 (Frontend):**
+#### ⚛️ Frontend (Vite + React)
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
 
-Open `http://localhost:5173` to launch the **Jarvis HUD AI Database Analyst**!
+Open `http://localhost:5173` to launch **Mitra**.
 
 ---
 
-## 🧪 Testing & Verification
+## 📜 License
 
-```bash
-# Backend unit tests
-cd backend && pytest -q
-
-# Frontend build & type check
-cd frontend && npm run build
-```
-
----
-
-## 📜 License & Disclaimer
-
-Mitra is an AI-powered database assistant designed for read-only analytical queries. All generated queries are AST-checked via SQLGlot to prevent unauthorized database modifications.
+Distributed under the MIT License. See `LICENSE` for more information.

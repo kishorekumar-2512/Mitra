@@ -91,18 +91,45 @@ class GeminiProvider:
     """Gemini REST adapter using function declarations and function-response parts."""
     def __init__(self, api_key: str) -> None: self.api_key = api_key
 
+    @staticmethod
+    def _clean_schema(schema: dict[str, Any]) -> dict[str, Any]:
+        """Strip JSON Schema fields that the Gemini function-declarations API rejects.
+
+        Pydantic's model_json_schema() emits $defs, title, default, anyOf, and
+        other constructs that are valid JSON Schema but not accepted by Gemini.
+        This recursively removes them and flattens simple anyOf references.
+        """
+        UNSUPPORTED_KEYS = {"$defs", "title", "default", "examples", "additionalProperties"}
+        cleaned: dict[str, Any] = {}
+        for key, value in schema.items():
+            if key in UNSUPPORTED_KEYS:
+                continue
+            # Flatten anyOf that wraps a single real type with a null alternative
+            # e.g. {"anyOf": [{"type": "string"}, {"type": "null"}]} → {"type": "string"}
+            if key == "anyOf" and isinstance(value, list):
+                non_null = [v for v in value if v.get("type") != "null"]
+                if len(non_null) == 1:
+                    cleaned.update(GeminiProvider._clean_schema(non_null[0]))
+                    continue
+            if isinstance(value, dict):
+                cleaned[key] = GeminiProvider._clean_schema(value)
+            elif isinstance(value, list):
+                cleaned[key] = [GeminiProvider._clean_schema(item) if isinstance(item, dict) else item for item in value]
+            else:
+                cleaned[key] = value
+        return cleaned
+
     async def create(self, *, model: str, max_tokens: int, system: str, tools: list[dict[str, Any]], messages: list[dict[str, Any]]) -> dict[str, Any]:
         contents: list[dict[str, Any]] = []
         for message in messages:
             content = message["content"]
             if message["role"] == "assistant":
                 blocks = content if isinstance(content, list) else [{"type": "text", "text": content}]
-                parts = ([{"text": block["text"]} for block in blocks if block.get("type") == "text"] + [{"functionCall": {"id": block["id"], "name": block["name"], "args": block["input"]}} for block in blocks if block.get("type") == "tool_use"])
+                parts = ([{"text": block["text"]} for block in blocks if block.get("type") == "text"] + [{"functionCall": {"name": block["name"], "args": block["input"]}} for block in blocks if block.get("type") == "tool_use"])
                 contents.append({"role": "model", "parts": parts})
             elif isinstance(content, list):
                 function_results = [
                     {"functionResponse": {
-                        "id": result["tool_use_id"],
                         "name": result["tool_name"],
                         "response": {"result": json.loads(result["content"])},
                     }}
@@ -111,13 +138,21 @@ class GeminiProvider:
                 contents.append({"role": "user", "parts": function_results})
             else:
                 contents.append({"role": "user", "parts": [{"text": content}]})
-        declarations = [{"name": tool["name"], "description": tool["description"], "parameters": tool["input_schema"]} for tool in tools]
+        declarations = [{"name": tool["name"], "description": tool["description"], "parameters": self._clean_schema(tool["input_schema"])} for tool in tools]
         body = {"systemInstruction": {"parts": [{"text": system}]}, "contents": contents, "tools": [{"functionDeclarations": declarations}], "generationConfig": {"maxOutputTokens": max_tokens}}
         url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
         async with httpx.AsyncClient(timeout=60) as client:
             response = await client.post(url, params={"key": self.api_key}, json=body)
+            if response.status_code != 200:
+                import logging
+                logging.getLogger(__name__).error("Gemini API %s: %s", response.status_code, response.text)
             response.raise_for_status()
-        parts = response.json()["candidates"][0]["content"].get("parts", [])
+        data = response.json()
+        candidates = data.get("candidates", [])
+        if not candidates:
+            block_reason = data.get("promptFeedback", {}).get("blockReason", "unknown")
+            raise RuntimeError(f"Gemini returned no candidates (blockReason={block_reason})")
+        parts = candidates[0].get("content", {}).get("parts", [])
         content = []
         for index, part in enumerate(parts):
             if "text" in part: content.append({"type": "text", "text": part["text"]})
