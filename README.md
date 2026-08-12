@@ -16,19 +16,25 @@
 
 ---
 
-### 2. 🔍 Searchable Database Explorer & Schema Inspector
+### 2. 🎙️ Voice Dictation Engine & Waveforms
+![Voice Dictation Engine](assets/voice-dictation.png)
+*Microphone input bar with glowing visualizer, keyboard shortcuts (`Enter` send, `Shift` + `Enter` newline), provider settings toggle, and dual-engine voice transcription.*
+
+---
+
+### 3. 🔍 Searchable Database Explorer & Schema Inspector
 ![Database Explorer](assets/database-explorer.png)
 *Interactive schema inspection, foreign key mapping, column data-type badges, search filtering, and instant 50-row table previews.*
 
 ---
 
-### 3. 📊 Real-Time Analytics Dashboard
+### 4. 📊 Real-Time Analytics Dashboard
 ![Analytics Dashboard](assets/analytics-dashboard.png)
 *Curated library of live data-backed Recharts visual cards (Line, Bar, Pie) with PNG export, CSV download, and interactive pinning.*
 
 ---
 
-### 4. 💬 Sidebar & Conversation History
+### 5. 💬 Sidebar & Conversation History
 ![Sidebar History](assets/sidebar-history.png)
 *Searchable 7-day conversation history, quick workspace status monitors, and one-click thread navigation.*
 
